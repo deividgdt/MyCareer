@@ -3,7 +3,7 @@
  * Interface definition for a Head-Tail Model List: LISTHTIF
  * Operations: getHead, getTail, set, insert, delete
  * @author David L.
- * @version 1.0 10/03/2021
+ * @version 1.1 11/03/2021
  */
 
 public interface ListaHTIF<E> extends SequenceIF<E>
@@ -23,7 +23,6 @@ public interface ListaHTIF<E> extends SequenceIF<E>
     /**
      * Set or modify the List Head
      * @param: e New value for the List Head
-     * @pre: !isEmpty();
      * @return: The List with the modification
      */
     public ListaHTIF<E> set(E e);
