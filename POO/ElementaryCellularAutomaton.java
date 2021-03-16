@@ -3,8 +3,6 @@ import java.util.*;
 /**
  * Model a 1D elementary cellular automaton.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version  2016.02.29 - version 4
  */
 public class Automaton
 {
@@ -14,24 +12,30 @@ public class Automaton
     private int[] state;
     // The state table encoding the next-state changes.
     private int[] stateTable;
+    // The bitsValues table
+    private final int[] bitsValues;
     
+
     /**
      * Create a 1D automaton consisting of the given number of cells.
      * @param numberOfCells The number of cells in the automaton.
      */
-    public Automaton(int numberOfCells)
+    public Automaton(int numberOfCells, int wolframCode)
     {
         this.numberOfCells = numberOfCells;
+        // The bits value table
+        bitsValues = new int[] {128,64,32,16,8,4,2,1,};
         // Allow an extra element to avoid 'fencepost' errors.
         state = new int[numberOfCells + 1];
-        stateTable = new int[] {
+        stateTable = convertWolframCode(wolframCode);
+        /*stateTable = new int[] {
             //0, 1, 0, 0, 1, 0, 0, 1, // Wolfram code 146
             1, 0, 1, 1, 0, 1, 1, 1, // Wolfram code 62
-        };
+        };*/
         // Seed the automaton with a single 'on' cell.
         state[numberOfCells / 2] = 1;
     }
-    
+
     /**
      * Print the current state of the automaton.
      */
@@ -42,7 +46,7 @@ public class Automaton
         }
         System.out.println();
     }   
-    
+
     /**
      * Update the automaton to its next state.
      */
@@ -62,7 +66,7 @@ public class Automaton
         }
         state = nextState;
     }
-    
+
     /**
      * Reset the automaton.
      */
@@ -88,7 +92,7 @@ public class Automaton
     {
         return stateTable[encodeTriplet(left, center, right)];
     }
-    
+
     /**
      * Encode the 1/0 triplet (left, center, right) as an
      * integer value in the range 0-7.
@@ -100,6 +104,29 @@ public class Automaton
     private int encodeTriplet(int left, int center, int right)
     {
         return left * 4 + center * 2 + right;
+    }
+
+    /**
+     * An example of a method - replace this comment with your own
+     *
+     * @param  y   a sample parameter for a method
+     * @return     the sum of x and y
+     */
+    public int[] convertWolframCode(int wolframCode)
+    {
+        int[] stateTable = new int[8];
+        int aux = wolframCode;
+        
+        for(int i=0;i<bitsValues.length;i++){
+            if(aux >= bitsValues[i]){
+                aux = aux - bitsValues[i];
+                stateTable[7-i] = 1;
+            }else{
+                stateTable[7-i] = 0;
+            } 
+        }
+                        
+        return stateTable;
     }
 
 }
